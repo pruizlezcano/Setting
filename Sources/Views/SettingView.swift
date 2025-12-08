@@ -35,6 +35,8 @@ public struct SettingView: View {
             picker
         case let textField as SettingTextField:
             textField
+        case let secureField as SettingSecureField:
+            secureField
         case let page as SettingPage:
 
             if isPagePreview {
