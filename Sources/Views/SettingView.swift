@@ -31,14 +31,11 @@ public struct SettingView: View {
             toggle
         case let slider as SettingSlider:
             slider
-        case let picker as SettingPicker:
-            picker
         case let textField as SettingTextField:
             textField
-        case let secureField as SettingSecureField:
-            secureField
+        // case let secureField as SettingSecureField:
+        //     secureField
         case let page as SettingPage:
-
             if isPagePreview {
                 Button {
                     isActive = true
@@ -71,7 +68,9 @@ public struct SettingView: View {
                     }
                     .opacity(0)
                 }
-                
+                .id(page.identifier)
+                .highlightIfTargeted(id: page.identifier)
+
             } else {
                 SettingPageView(
                     title: page.title,
@@ -106,11 +105,15 @@ public struct SettingView: View {
             ForEach(tuple.settings, id: \.identifier) { setting in
                 SettingView(setting: setting)
             }
-
         case let customView as SettingCustomView:
             customView.view
         default:
-            Text("Unsupported setting, please file a bug report.")
+            // For generic SettingPicker, check if it conforms to View and render it
+            if let viewSetting = setting as? any View {
+                AnyView(viewSetting)
+            } else {
+                Text("Unsupported setting type: \(type(of: setting))")
+            }
         }
     }
 }

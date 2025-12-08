@@ -8,15 +8,20 @@
 
 import SwiftUI
 
+// MARK: - SettingPicker
+
 /**
- A multi-choice picker.
+ A multi-choice picker with SwiftUI Picker-style API.
+ Supports custom views, enum bindings, and all display modes.
  */
-public struct SettingPicker: View, Setting {
+public struct SettingPicker<SelectionValue: Hashable, Content: View>: View, Setting {
     public var id: AnyHashable?
     public var icon: SettingIcon?
     public var title: String
-    public var choices: [String]
-    @Binding public var selectedIndex: Int
+
+    @Binding var selection: SelectionValue
+    let content: () -> Content
+
     public var foregroundColor: Color?
     public var horizontalSpacing = CGFloat(12)
     public var verticalPadding = CGFloat(14)
@@ -24,22 +29,22 @@ public struct SettingPicker: View, Setting {
     public var choicesConfiguration = ChoicesConfiguration()
 
     public init(
+        _ title: String = "",
         id: AnyHashable? = nil,
         icon: SettingIcon? = nil,
-        title: String,
-        choices: [String],
-        selectedIndex: Binding<Int>,
+        selection: Binding<SelectionValue>,
         foregroundColor: Color? = nil,
         horizontalSpacing: CGFloat = CGFloat(12),
         verticalPadding: CGFloat = CGFloat(14),
         horizontalPadding: CGFloat? = nil,
-        choicesConfiguration: ChoicesConfiguration = ChoicesConfiguration()
+        choicesConfiguration: ChoicesConfiguration = ChoicesConfiguration(),
+        @ViewBuilder content: @escaping () -> Content
     ) {
         self.id = id
         self.icon = icon
         self.title = title
-        self.choices = choices
-        self._selectedIndex = selectedIndex
+        _selection = selection
+        self.content = content
         self.foregroundColor = foregroundColor
         self.horizontalSpacing = horizontalSpacing
         self.verticalPadding = verticalPadding
@@ -100,8 +105,8 @@ public struct SettingPicker: View, Setting {
         SettingPickerView(
             icon: icon,
             title: title,
-            choices: choices,
-            selectedIndex: $selectedIndex,
+            selection: $selection,
+            content: content,
             foregroundColor: foregroundColor,
             horizontalSpacing: horizontalSpacing,
             verticalPadding: verticalPadding,
@@ -120,119 +125,141 @@ public extension SettingPicker {
     }
 }
 
-struct SettingPickerView: View {
+// MARK: - SettingPickerView
+
+struct SettingPickerView<SelectionValue: Hashable, Content: View>: View {
     @Environment(\.edgePadding) var edgePadding
     @Environment(\.settingSecondaryColor) var settingSecondaryColor
 
     var icon: SettingIcon?
     let title: String
-    var choices: [String]
-    @Binding var selectedIndex: Int
+    @Binding var selection: SelectionValue
+    let content: () -> Content
+
     var foregroundColor: Color?
     var horizontalSpacing = CGFloat(12)
     var verticalPadding = CGFloat(14)
     var horizontalPadding: CGFloat? = nil
-    var choicesConfiguration = SettingPicker.ChoicesConfiguration()
+    var choicesConfiguration: SettingPicker<SelectionValue, Content>.ChoicesConfiguration
 
     @State var isActive = false
 
     var body: some View {
         switch choicesConfiguration.pickerDisplayMode {
         case .navigation:
-            Button {
-                isActive = true
-            } label: {
-                HStack(spacing: horizontalSpacing) {
-                    if let icon {
-                        SettingIconView(icon: icon)
-                    }
-
-                    Text(title)
-                        .fixedSize(horizontal: false, vertical: true)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.vertical, verticalPadding)
-
-                    if choices.indices.contains(selectedIndex) {
-                        let selectedChoice = choices[selectedIndex]
-
-                        Text(selectedChoice)
-                            .foregroundColor(foregroundColor ?? settingSecondaryColor)
-                    }
-
-                    Image(systemName: "chevron.forward")
-                        .foregroundColor(foregroundColor ?? settingSecondaryColor)
-                }
-                .padding(.horizontal, horizontalPadding ?? edgePadding)
-                .accessibilityElement(children: .combine)
-            }
-            .buttonStyle(.row)
-            .background {
-                NavigationLink(isActive: $isActive) {
-                    SettingPickerChoicesView(
-                        title: title,
-                        choices: choices,
-                        selectedIndex: $selectedIndex,
-                        choicesConfiguration: choicesConfiguration
-                    )
-                } label: {
-                    EmptyView()
-                }
-                .opacity(0)
-            }
-
+            navigationModePicker
         case .menu:
+            menuModePicker
+        case .inline:
+            inlineModePicker
+        }
+    }
+
+    var navigationModePicker: some View {
+        Button {
+            isActive = true
+        } label: {
             HStack(spacing: horizontalSpacing) {
+                if let icon {
+                    SettingIconView(icon: icon)
+                }
+
                 Text(title)
                     .fixedSize(horizontal: false, vertical: true)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.vertical, verticalPadding)
 
-                Picker("", selection: $selectedIndex) {
-                    ForEach(Array(zip(choices.indices, choices)), id: \.1) { index, choice in
-                        Text(choice).tag(index)
-                    }
-                }
-                .pickerStyle(.menu)
-                #if os(iOS)
-                    .padding(.trailing, -edgePadding + 2)
-                #else
-                    .padding(.trailing, -2)
-                #endif
-                    .tint(foregroundColor ?? settingSecondaryColor)
+                // Show selected view content
+                content()
+                    .environment(\.pickerSelectionMode, .preview)
+                    .environment(\.pickerSelectedValue, AnyHashable(selection))
+                    .foregroundColor(foregroundColor ?? settingSecondaryColor)
+
+                Image(systemName: "chevron.forward")
+                    .foregroundColor(foregroundColor ?? settingSecondaryColor)
             }
             .padding(.horizontal, horizontalPadding ?? edgePadding)
             .accessibilityElement(children: .combine)
-        case .inline:
-            ForEach(Array(zip(choices.indices, choices)), id: \.1) { index, choice in
-                Button {
-                    selectedIndex = index
-                } label: {
-                    HStack {
-                        Text(choice)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .padding(.vertical, choicesConfiguration.verticalPadding)
-
-                        if index == selectedIndex {
-                            Image(systemName: "checkmark")
-                                .foregroundColor(.accentColor)
-                        }
-                    }
-                    .padding(.horizontal, choicesConfiguration.horizontalPadding)
-                }
-                .buttonStyle(.row)
-            }
         }
+        .buttonStyle(.row)
+        .background {
+            NavigationLink(isActive: $isActive) {
+                SettingPickerChoicesView(
+                    title: title,
+                    selection: $selection,
+                    content: content,
+                    choicesConfiguration: choicesConfiguration
+                )
+            } label: {
+                EmptyView()
+            }
+            .opacity(0)
+        }
+    }
+
+    var menuModePicker: some View {
+        HStack(spacing: horizontalSpacing) {
+            if let icon {
+                SettingIconView(icon: icon)
+            }
+
+            Text(title)
+                .fixedSize(horizontal: false, vertical: true)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.vertical, verticalPadding)
+
+            Picker("", selection: $selection) {
+                content()
+            }
+            .pickerStyle(.menu)
+            #if os(iOS)
+                .padding(.trailing, -edgePadding + 2)
+            #else
+                .padding(.trailing, -2)
+            #endif
+                .tint(foregroundColor ?? settingSecondaryColor)
+        }
+        .padding(.horizontal, horizontalPadding ?? edgePadding)
+        .accessibilityElement(children: .combine)
+    }
+
+    var inlineModePicker: some View {
+        let erasedSelection = Binding<AnyHashable>(
+            get: { AnyHashable(selection) },
+            set: { newValue in
+                if let typedValue = newValue.base as? SelectionValue {
+                    selection = typedValue
+                }
+            }
+        )
+
+        return content()
+            .environment(\.pickerSelectionMode, .inline)
+            .environment(\.pickerSelection, erasedSelection)
+            .environment(\.pickerVerticalPadding, choicesConfiguration.verticalPadding)
+            .environment(\.pickerHorizontalPadding, choicesConfiguration.horizontalPadding)
     }
 }
 
-struct SettingPickerChoicesView: View {
+// MARK: - SettingPickerChoicesView
+
+struct SettingPickerChoicesView<SelectionValue: Hashable, Content: View>: View {
     let title: String
-    var choices: [String]
-    @Binding var selectedIndex: Int
-    var choicesConfiguration: SettingPicker.ChoicesConfiguration
+    @Binding var selection: SelectionValue
+    let content: () -> Content
+    var choicesConfiguration: SettingPicker<SelectionValue, Content>.ChoicesConfiguration
 
     var body: some View {
         SettingPageView(title: title, navigationTitleDisplayMode: choicesConfiguration.pageNavigationTitleDisplayMode) {
+            let erasedSelection = Binding<AnyHashable>(
+                get: { AnyHashable(selection) },
+                set: { newValue in
+                    if let typedValue = newValue.base as? SelectionValue {
+                        selection = typedValue
+                    }
+                }
+            )
+
             let settingGroupView = SettingGroupView(
                 header: choicesConfiguration.groupHeader,
                 footer: choicesConfiguration.groupFooter,
@@ -243,24 +270,11 @@ struct SettingPickerChoicesView: View {
                 dividerTrailingMargin: choicesConfiguration.groupDividerTrailingMargin,
                 dividerColor: choicesConfiguration.groupDividerColor
             ) {
-                ForEach(Array(zip(choices.indices, choices)), id: \.1) { index, choice in
-                    Button {
-                        selectedIndex = index
-                    } label: {
-                        HStack {
-                            Text(choice)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .padding(.vertical, choicesConfiguration.verticalPadding)
-
-                            if index == selectedIndex {
-                                Image(systemName: "checkmark")
-                                    .foregroundColor(.accentColor)
-                            }
-                        }
-                        .padding(.horizontal, choicesConfiguration.horizontalPadding)
-                    }
-                    .buttonStyle(.row)
-                }
+                content()
+                    .environment(\.pickerSelectionMode, .selection)
+                    .environment(\.pickerSelection, erasedSelection)
+                    .environment(\.pickerVerticalPadding, choicesConfiguration.verticalPadding)
+                    .environment(\.pickerHorizontalPadding, choicesConfiguration.horizontalPadding)
             }
             #if os(iOS)
                 if #available(iOS 16.0, *) {
@@ -271,6 +285,112 @@ struct SettingPickerChoicesView: View {
             #else
                 settingGroupView
             #endif
+        }
+    }
+}
+
+// MARK: - Environment Keys for Picker Context
+
+private struct PickerSelectionModeKey: EnvironmentKey {
+    static let defaultValue: PickerSelectionDisplayMode = .selection
+}
+
+private struct PickerSelectionKey: EnvironmentKey {
+    static let defaultValue: Binding<AnyHashable>? = nil
+}
+
+private struct PickerSelectedValueKey: EnvironmentKey {
+    static let defaultValue: AnyHashable? = nil
+}
+
+private struct PickerVerticalPaddingKey: EnvironmentKey {
+    static let defaultValue: CGFloat = 14
+}
+
+private struct PickerHorizontalPaddingKey: EnvironmentKey {
+    static let defaultValue: CGFloat? = nil
+}
+
+enum PickerSelectionDisplayMode {
+    case selection // Full selection page
+    case preview // Preview in main row
+    case inline // Inline display
+}
+
+extension EnvironmentValues {
+    var pickerSelectionMode: PickerSelectionDisplayMode {
+        get { self[PickerSelectionModeKey.self] }
+        set { self[PickerSelectionModeKey.self] = newValue }
+    }
+
+    var pickerSelection: Binding<AnyHashable>? {
+        get { self[PickerSelectionKey.self] }
+        set { self[PickerSelectionKey.self] = newValue }
+    }
+
+    var pickerSelectedValue: AnyHashable? {
+        get { self[PickerSelectedValueKey.self] }
+        set { self[PickerSelectedValueKey.self] = newValue }
+    }
+
+    var pickerVerticalPadding: CGFloat {
+        get { self[PickerVerticalPaddingKey.self] }
+        set { self[PickerVerticalPaddingKey.self] = newValue }
+    }
+
+    var pickerHorizontalPadding: CGFloat? {
+        get { self[PickerHorizontalPaddingKey.self] }
+        set { self[PickerHorizontalPaddingKey.self] = newValue }
+    }
+}
+
+// MARK: - View Extensions for Picker Integration
+
+public extension View {
+    /// Makes a view selectable in a SettingPicker with proper layout and selection indicator
+    func settingPickerOption<V: Hashable>(_ tag: V) -> some View {
+        modifier(SettingPickerOptionModifier(tag: tag))
+    }
+}
+
+private struct SettingPickerOptionModifier<Tag: Hashable>: ViewModifier {
+    let tag: Tag
+    @Environment(\.pickerSelectionMode) var mode
+    @Environment(\.pickerSelection) var selection
+    @Environment(\.pickerSelectedValue) var selectedValue
+    @Environment(\.pickerVerticalPadding) var verticalPadding
+    @Environment(\.pickerHorizontalPadding) var horizontalPadding
+
+    func body(content: Content) -> some View {
+        switch mode {
+        case .preview:
+            // Show only if this is the selected option
+            if let selectedValue = selectedValue, AnyHashable(tag) == selectedValue {
+                content
+            }
+
+        case .selection, .inline:
+            Button {
+                if let binding = selection {
+                    binding.wrappedValue = AnyHashable(tag)
+                }
+            } label: {
+                HStack {
+                    content
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.vertical, verticalPadding)
+
+                    if let selectedValue = selectedValue ?? selection?.wrappedValue {
+                        if AnyHashable(tag) == selectedValue {
+                            Image(systemName: "checkmark")
+                                .foregroundColor(.accentColor)
+                        }
+                    }
+                }
+                .padding(.horizontal, horizontalPadding)
+            }
+            .buttonStyle(.row)
+            .tag(tag)
         }
     }
 }

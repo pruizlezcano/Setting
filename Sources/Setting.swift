@@ -1,5 +1,5 @@
 //
-//  SettingTheme.swift
+//  Setting.swift
 //  Setting
 //
 //  Created by A. Zheng (github.com/aheze) on 2/21/23.
@@ -40,8 +40,6 @@ public extension Setting {
             return toggle.title
         case is SettingSlider:
             return nil
-        case let picker as SettingPicker:
-            return picker.title
         case let textField as SettingTextField:
             return textField.placeholder
         case let page as SettingPage:
@@ -53,6 +51,13 @@ public extension Setting {
         case let customView as SettingCustomView:
             return customView.titleForSearch ?? "Custom"
         default:
+            // Handle generic SettingPicker using Mirror
+            let mirror = Mirror(reflecting: self)
+            if let titleChild = mirror.children.first(where: { $0.label == "title" }),
+               let title = titleChild.value as? String
+            {
+                return title
+            }
             print("Text identifier was nil for: \(type(of: self))")
             return nil
         }
@@ -71,8 +76,6 @@ public extension Setting {
             return toggle.title
         case is SettingSlider:
             return nil
-        case let picker as SettingPicker:
-            return picker.title
         case let textField as SettingTextField:
             return textField.placeholder
         case let page as SettingPage:
@@ -84,6 +87,13 @@ public extension Setting {
         case let customView as SettingCustomView:
             return customView.titleForSearch
         default:
+            // Handle generic SettingPicker using Mirror
+            let mirror = Mirror(reflecting: self)
+            if let titleChild = mirror.children.first(where: { $0.label == "title" }),
+               let title = titleChild.value as? String
+            {
+                return title
+            }
             return nil
         }
     }
