@@ -35,3 +35,54 @@ extension StringProtocol {
         return result
     }
 }
+
+public extension CGFloat {
+    static var settingIconCornerRadius: CGFloat {
+        if #available(iOS 26.0, macOS 26.0, *) {
+            return 7
+        }
+        return 6
+    }
+
+    static var settingGroupCornerRadius: CGFloat {
+        if #available(iOS 26.0, macOS 26.0, *) {
+            return 24
+        }
+        return 12
+    }
+
+    static var settingDefaultEdgePadding: CGFloat {
+        if #available(iOS 26.0, macOS 26.0, *) {
+            return 14
+        }
+        return 20
+    }
+
+    static var settingSmallEdgePadding: CGFloat {
+        if #available(iOS 26.0, macOS 26.0, *) {
+            return 14
+        }
+        return 16
+    }
+
+    static var settingRowVerticalPadding: CGFloat {
+        if #available(iOS 26.0, macOS 26.0, *) {
+            return 14
+        }
+        return 14
+    }
+
+    static var settingSliderVerticalPadding: CGFloat {
+        if #available(iOS 26.0, macOS 26.0, *) {
+            return 10
+        }
+        return 8
+    }
+
+    static var settingSectionVerticalPadding: CGFloat {
+        if #available(iOS 26.0, macOS 26.0, *) {
+            return 8
+        }
+        return 6
+    }
+}

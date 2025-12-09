@@ -19,7 +19,7 @@ public struct SettingJumpLink: View {
     public var indicator = "chevron.forward"
     public var verticalSpacing = CGFloat(6)
     public var horizontalSpacing = CGFloat(12)
-    public var verticalPadding = CGFloat(14)
+    public var verticalPadding = CGFloat.settingRowVerticalPadding
     public var horizontalPadding: CGFloat?
 
     @EnvironmentObject var settingViewModel: SettingViewModel
@@ -30,7 +30,7 @@ public struct SettingJumpLink: View {
         indicator: String = "chevron.forward",
         verticalSpacing: CGFloat = CGFloat(6),
         horizontalSpacing: CGFloat = CGFloat(12),
-        verticalPadding: CGFloat = CGFloat(14),
+        verticalPadding: CGFloat = CGFloat.settingRowVerticalPadding,
         horizontalPadding: CGFloat? = nil
     ) {
         self.path = path

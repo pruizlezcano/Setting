@@ -18,7 +18,7 @@ public struct SettingSlider: View, Setting {
     public var step: Double.Stride = 0.1
     public var minimumImage: Image?
     public var maximumImage: Image?
-    public var verticalPadding = CGFloat(8)
+    public var verticalPadding = CGFloat.settingSliderVerticalPadding
     public var horizontalPadding: CGFloat?
 
     public init(
@@ -28,7 +28,7 @@ public struct SettingSlider: View, Setting {
         step: Double.Stride = 0.1,
         minimumImage: Image? = nil,
         maximumImage: Image? = nil,
-        verticalPadding: CGFloat = CGFloat(8),
+        verticalPadding: CGFloat = CGFloat.settingSliderVerticalPadding,
         horizontalPadding: CGFloat? = nil
     ) {
         self.id = id
@@ -64,7 +64,7 @@ struct SettingSliderView: View {
     var step: Double.Stride = 0.1
     var minimumImage: Image?
     var maximumImage: Image?
-    var verticalPadding = CGFloat(8)
+    var verticalPadding = CGFloat.settingSliderVerticalPadding
     var horizontalPadding: CGFloat? = nil
 
     var body: some View {

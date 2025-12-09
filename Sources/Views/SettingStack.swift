@@ -73,7 +73,7 @@ public struct SettingStack: View {
         page: @escaping () -> SettingPage,
         @ViewBuilder customNoResultsView: @escaping () -> Content
     ) where Content: View {
-        self._settingViewModel = StateObject(wrappedValue: settingViewModel)
+        _settingViewModel = StateObject(wrappedValue: settingViewModel)
         self.embedInNavigationStack = embedInNavigationStack
         self.isSearchable = isSearchable
         self.page = page
@@ -91,22 +91,20 @@ public struct SettingStack: View {
                 let narrowEdge = min(windowSize.width, windowSize.height)
 
                 if narrowEdge > 400 {
-                    return 20
+                    return CGFloat.settingDefaultEdgePadding
                 } else {
-                    return 16
+                    return CGFloat.settingSmallEdgePadding
                 }
             }()
 
             VStack {
                 if !embedInNavigationStack {
                     main
-                }
-                else if #available(iOS 16.0, macOS 13.0, *) {
+                } else if #available(iOS 16.0, macOS 13.0, *) {
                     NavigationStack {
                         main
                     }
-                }
-                else {
+                } else {
                     NavigationView {
                         main
                     }

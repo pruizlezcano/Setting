@@ -16,7 +16,7 @@ public struct SettingToggle: View, Setting {
     public var title: String
     @Binding public var isOn: Bool
     public var horizontalSpacing = CGFloat(12)
-    public var verticalPadding = CGFloat(14)
+    public var verticalPadding = CGFloat.settingRowVerticalPadding
     public var horizontalPadding: CGFloat?
 
     public init(
@@ -24,7 +24,7 @@ public struct SettingToggle: View, Setting {
         title: String,
         isOn: Binding<Bool>,
         horizontalSpacing: CGFloat = CGFloat(12),
-        verticalPadding: CGFloat = CGFloat(14),
+        verticalPadding: CGFloat = CGFloat.settingRowVerticalPadding,
         horizontalPadding: CGFloat? = nil
     ) {
         self.id = id
@@ -55,7 +55,7 @@ struct SettingToggleView: View {
     @Binding var isOn: Bool
 
     var horizontalSpacing = CGFloat(12)
-    var verticalPadding = CGFloat(14)
+    var verticalPadding = CGFloat.settingRowVerticalPadding
     var horizontalPadding: CGFloat? = nil
 
     var body: some View {

@@ -14,19 +14,19 @@ public struct SettingSecureField: View, Setting {
     public var id: AnyHashable?
     public var placeholder: String
     @Binding public var text: String
-    public var verticalPadding = CGFloat(14)
-    public var horizontalPadding = CGFloat(16)
+    public var verticalPadding = CGFloat.settingRowVerticalPadding
+    public var horizontalPadding = CGFloat.settingDefaultEdgePadding
 
     public init(
         id: AnyHashable? = nil,
         placeholder: String,
         text: Binding<String>,
-        verticalPadding: CGFloat = CGFloat(14),
-        horizontalPadding: CGFloat = CGFloat(16)
+        verticalPadding: CGFloat = CGFloat.settingRowVerticalPadding,
+        horizontalPadding: CGFloat = CGFloat.settingDefaultEdgePadding
     ) {
         self.id = id
         self.placeholder = placeholder
-        self._text = text
+        _text = text
         self.verticalPadding = verticalPadding
         self.horizontalPadding = horizontalPadding
     }
@@ -45,8 +45,8 @@ struct SettingSecureFieldView: View {
     let placeholder: String
     @Binding var text: String
 
-    var verticalPadding = CGFloat(14)
-    var horizontalPadding = CGFloat(16)
+    var verticalPadding = CGFloat.settingRowVerticalPadding
+    var horizontalPadding = CGFloat.settingDefaultEdgePadding
 
     var body: some View {
         SecureField(placeholder, text: $text)

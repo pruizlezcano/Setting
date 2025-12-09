@@ -9,7 +9,7 @@
 import SwiftUI
 
 private struct EdgePaddingKey: EnvironmentKey {
-    static let defaultValue = CGFloat(20)
+    static let defaultValue = CGFloat.settingDefaultEdgePadding
 }
 
 private struct PrimaryColorKey: EnvironmentKey {

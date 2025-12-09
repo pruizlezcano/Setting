@@ -31,15 +31,15 @@ public struct SettingIconView: View {
 
     public var body: some View {
         switch icon {
-        case .system(let icon, let foregroundColor, let backgroundColor):
+        case let .system(icon, foregroundColor, backgroundColor):
             Image(systemName: icon)
                 .foregroundColor(foregroundColor)
                 .font(.footnote)
                 .frame(width: 28, height: 28)
                 .background(backgroundColor)
-                .clipShape(RoundedRectangle(cornerRadius: 6))
+                .clipShape(RoundedRectangle(cornerRadius: .settingIconCornerRadius))
 
-        case .image(let name, let inset, let foregroundColor, let backgroundColor):
+        case let .image(name, inset, foregroundColor, backgroundColor):
             if let foregroundColor {
                 Image(name)
                     .resizable()
@@ -49,7 +49,7 @@ public struct SettingIconView: View {
                     .padding(inset)
                     .frame(width: 28, height: 28)
                     .background(backgroundColor)
-                    .clipShape(RoundedRectangle(cornerRadius: 6))
+                    .clipShape(RoundedRectangle(cornerRadius: .settingIconCornerRadius))
             } else {
                 Image(name)
                     .resizable()
@@ -57,10 +57,10 @@ public struct SettingIconView: View {
                     .padding(inset)
                     .frame(width: 28, height: 28)
                     .background(backgroundColor)
-                    .clipShape(RoundedRectangle(cornerRadius: 6))
+                    .clipShape(RoundedRectangle(cornerRadius: .settingIconCornerRadius))
             }
 
-        case .custom(let anyView):
+        case let .custom(anyView):
             anyView
         }
     }

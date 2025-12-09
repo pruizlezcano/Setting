@@ -24,7 +24,7 @@ public struct SettingPicker<SelectionValue: Hashable, Content: View>: View, Sett
 
     public var foregroundColor: Color?
     public var horizontalSpacing = CGFloat(12)
-    public var verticalPadding = CGFloat(14)
+    public var verticalPadding = CGFloat.settingRowVerticalPadding
     public var horizontalPadding: CGFloat?
     public var choicesConfiguration = ChoicesConfiguration()
 
@@ -35,7 +35,7 @@ public struct SettingPicker<SelectionValue: Hashable, Content: View>: View, Sett
         selection: Binding<SelectionValue>,
         foregroundColor: Color? = nil,
         horizontalSpacing: CGFloat = CGFloat(12),
-        verticalPadding: CGFloat = CGFloat(14),
+        verticalPadding: CGFloat = CGFloat.settingRowVerticalPadding,
         horizontalPadding: CGFloat? = nil,
         choicesConfiguration: ChoicesConfiguration = ChoicesConfiguration(),
         @ViewBuilder content: @escaping () -> Content
@@ -59,7 +59,7 @@ public struct SettingPicker<SelectionValue: Hashable, Content: View>: View, Sett
     }
 
     public struct ChoicesConfiguration {
-        public var verticalPadding = CGFloat(14)
+        public var verticalPadding = CGFloat.settingRowVerticalPadding
         public var horizontalPadding: CGFloat?
         public var pageNavigationTitleDisplayMode = SettingPage.NavigationTitleDisplayMode.inline
         public var pickerDisplayMode = PickerDisplayMode.navigation
@@ -73,7 +73,7 @@ public struct SettingPicker<SelectionValue: Hashable, Content: View>: View, Sett
         public var groupDividerColor: Color?
 
         public init(
-            verticalPadding: CGFloat = CGFloat(14),
+            verticalPadding: CGFloat = CGFloat.settingRowVerticalPadding,
             horizontalPadding: CGFloat? = nil,
             pageNavigationTitleDisplayMode: SettingPage.NavigationTitleDisplayMode = SettingPage.NavigationTitleDisplayMode.inline,
             pickerDisplayMode: PickerDisplayMode = PickerDisplayMode.navigation,
@@ -140,7 +140,7 @@ struct SettingPickerView<SelectionValue: Hashable, Content: View>: View {
 
     var foregroundColor: Color?
     var horizontalSpacing = CGFloat(12)
-    var verticalPadding = CGFloat(14)
+    var verticalPadding = CGFloat.settingRowVerticalPadding
     var horizontalPadding: CGFloat? = nil
     var choicesConfiguration: SettingPicker<SelectionValue, Content>.ChoicesConfiguration
 

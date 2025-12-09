@@ -17,7 +17,7 @@ public struct SettingButton: View, Setting {
     public var title: String
     public var indicator: String? = "arrow.up.forward"
     public var horizontalSpacing = CGFloat(12)
-    public var verticalPadding = CGFloat(14)
+    public var verticalPadding = CGFloat.settingRowVerticalPadding
     public var horizontalPadding: CGFloat?
     public var action: () -> Void
 
@@ -27,7 +27,7 @@ public struct SettingButton: View, Setting {
         title: String,
         indicator: String? = "arrow.up.forward",
         horizontalSpacing: CGFloat = CGFloat(12),
-        verticalPadding: CGFloat = CGFloat(14),
+        verticalPadding: CGFloat = CGFloat.settingRowVerticalPadding,
         horizontalPadding: CGFloat? = nil,
         action: @escaping () -> Void
     ) {
@@ -64,7 +64,7 @@ struct SettingButtonView: View {
     let title: String
     var indicator: String? = "arrow.up.forward"
     var horizontalSpacing = CGFloat(12)
-    var verticalPadding = CGFloat(14)
+    var verticalPadding = CGFloat.settingRowVerticalPadding
     var horizontalPadding: CGFloat? = nil
     var action: () -> Void
 

@@ -24,16 +24,16 @@ public struct SettingSearchResult {
 
 public struct SettingSearchResultView: View {
     @Environment(\.settingBackgroundColor) var settingBackgroundColor
-    
+
     public var searchResult: SettingSearchResult
     public var spacing = CGFloat(20)
-    public var verticalPadding = CGFloat(6)
+    public var verticalPadding = CGFloat.settingSectionVerticalPadding
     public var backgroundColor: Color?
 
     public init(
         searchResult: SettingSearchResult,
         spacing: CGFloat = CGFloat(20),
-        verticalPadding: CGFloat = CGFloat(6),
+        verticalPadding: CGFloat = CGFloat.settingSectionVerticalPadding,
         backgroundColor: Color? = nil
     ) {
         self.searchResult = searchResult

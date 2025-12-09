@@ -16,7 +16,7 @@ public struct SettingPage: Setting {
     public var title: String
     public var selectedChoice: String?
     public var spacing = CGFloat(20)
-    public var verticalPadding = CGFloat(6)
+    public var verticalPadding = CGFloat.settingSectionVerticalPadding
     public var backgroundColor: Color?
     public var navigationTitleDisplayMode = NavigationTitleDisplayMode.automatic
     public var previewConfiguration = PreviewConfiguration()
@@ -27,7 +27,7 @@ public struct SettingPage: Setting {
         title: String,
         selectedChoice: String? = nil,
         spacing: CGFloat = CGFloat(20),
-        verticalPadding: CGFloat = CGFloat(6),
+        verticalPadding: CGFloat = CGFloat.settingSectionVerticalPadding,
         backgroundColor: Color? = nil,
         navigationTitleDisplayMode: SettingPage.NavigationTitleDisplayMode = NavigationTitleDisplayMode.automatic,
         previewConfiguration: SettingPage.PreviewConfiguration = PreviewConfiguration(),
@@ -48,14 +48,14 @@ public struct SettingPage: Setting {
         public var icon: SettingIcon?
         public var indicator = "chevron.forward"
         public var horizontalSpacing = CGFloat(12)
-        public var verticalPadding = CGFloat(14)
+        public var verticalPadding = CGFloat.settingRowVerticalPadding
         public var horizontalPadding: CGFloat?
 
         public init(
             icon: SettingIcon? = nil,
             indicator: String = "chevron.forward",
             horizontalSpacing: CGFloat = CGFloat(12),
-            verticalPadding: CGFloat = CGFloat(14),
+            verticalPadding: CGFloat = CGFloat.settingRowVerticalPadding,
             horizontalPadding: CGFloat? = nil
         ) {
             self.icon = icon
@@ -106,7 +106,7 @@ struct SettingPageView<Content>: View where Content: View {
 
     var title: String
     var spacing = CGFloat(20)
-    var verticalPadding = CGFloat(12)
+    var verticalPadding = CGFloat.settingSectionVerticalPadding
     var backgroundColor: Color?
     var navigationTitleDisplayMode = SettingPage.NavigationTitleDisplayMode.inline
     var isInitialPage = false
@@ -182,7 +182,7 @@ public struct SettingPagePreviewView: View {
     var icon: SettingIcon?
     var indicator = "chevron.forward"
     var horizontalSpacing = CGFloat(12)
-    var verticalPadding = CGFloat(14)
+    var verticalPadding = CGFloat.settingRowVerticalPadding
     var horizontalPadding: CGFloat?
 
     public init(
@@ -192,7 +192,7 @@ public struct SettingPagePreviewView: View {
         indicator: String = "chevron.forward",
         iconForegroundColor _: Color? = nil,
         horizontalSpacing: CGFloat = CGFloat(12),
-        verticalPadding: CGFloat = CGFloat(14),
+        verticalPadding: CGFloat = CGFloat.settingRowVerticalPadding,
         horizontalPadding: CGFloat? = nil
     ) {
         self.title = title

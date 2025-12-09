@@ -1,5 +1,5 @@
 //
-//  SettingDividedVStack.swift
+//  SettingGroup.swift
 //  Setting
 //
 //  Created by A. Zheng (github.com/aheze) on 2/21/23.
@@ -18,7 +18,7 @@ public struct SettingGroup: Setting {
     public var allowAttributedFooter = true
     public var horizontalPadding: CGFloat?
     public var backgroundColor: Color?
-    public var backgroundCornerRadius = CGFloat(12)
+    public var backgroundCornerRadius = CGFloat.settingGroupCornerRadius
     public var dividerLeadingMargin = CGFloat(16)
     public var dividerTrailingMargin = CGFloat(0)
     public var dividerColor: Color?
@@ -31,7 +31,7 @@ public struct SettingGroup: Setting {
         allowAttributedFooter: Bool = true,
         horizontalPadding: CGFloat? = nil,
         backgroundColor: Color? = nil,
-        backgroundCornerRadius: CGFloat = CGFloat(12),
+        backgroundCornerRadius: CGFloat = CGFloat.settingGroupCornerRadius,
         dividerLeadingMargin: CGFloat = CGFloat(16),
         dividerTrailingMargin: CGFloat = CGFloat(0),
         dividerColor: Color? = nil,
@@ -63,7 +63,7 @@ public struct SettingGroupView<Content: View>: View {
     public var horizontalPadding: CGFloat?
     public var foregroundColor: Color?
     public var backgroundColor: Color?
-    public var backgroundCornerRadius = CGFloat(12)
+    public var backgroundCornerRadius = CGFloat.settingGroupCornerRadius
     public var dividerLeadingMargin = CGFloat(16)
     public var dividerTrailingMargin = CGFloat(0)
     public var dividerColor: Color?
@@ -77,7 +77,7 @@ public struct SettingGroupView<Content: View>: View {
         horizontalPadding: CGFloat? = nil,
         foregroundColor: Color? = nil,
         backgroundColor: Color? = nil,
-        backgroundCornerRadius: CGFloat = CGFloat(12),
+        backgroundCornerRadius: CGFloat = CGFloat.settingGroupCornerRadius,
         dividerLeadingMargin: CGFloat = CGFloat(16),
         dividerTrailingMargin: CGFloat = CGFloat(0),
         dividerColor: Color? = nil,
@@ -114,7 +114,7 @@ public struct SettingGroupView<Content: View>: View {
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.horizontal, backgroundCornerRadius)
+                .padding(.horizontal, horizontalPadding ?? edgePadding)
                 .padding(.bottom, 6)
             }
 
@@ -142,7 +142,7 @@ public struct SettingGroupView<Content: View>: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .font(.system(.subheadline))
                 .foregroundColor(foregroundColor ?? settingSecondaryColor)
-                .padding(.horizontal, backgroundCornerRadius)
+                .padding(.horizontal, horizontalPadding ?? edgePadding)
                 .padding(.top, 8)
             }
         }

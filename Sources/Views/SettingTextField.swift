@@ -15,14 +15,14 @@ public struct SettingTextField: View, Setting {
     public var id: AnyHashable?
     public var placeholder: String
     @Binding public var text: String
-    public var verticalPadding = CGFloat(14)
+    public var verticalPadding = CGFloat.settingRowVerticalPadding
     public var horizontalPadding: CGFloat?
 
     public init(
         id: AnyHashable? = nil,
         placeholder: String,
         text: Binding<String>,
-        verticalPadding: CGFloat = CGFloat(14),
+        verticalPadding: CGFloat = CGFloat.settingRowVerticalPadding,
         horizontalPadding: CGFloat? = nil
     ) {
         self.id = id
@@ -50,7 +50,7 @@ struct SettingTextFieldView: View {
     let placeholder: String
     @Binding var text: String
 
-    var verticalPadding = CGFloat(14)
+    var verticalPadding = CGFloat.settingRowVerticalPadding
     var horizontalPadding: CGFloat? = nil
 
     var body: some View {
