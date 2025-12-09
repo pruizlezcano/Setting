@@ -16,7 +16,7 @@ public struct SettingTextField: View, Setting {
     public var placeholder: String
     @Binding public var text: String
     public var verticalPadding = CGFloat(14)
-    public var horizontalPadding: CGFloat? = nil
+    public var horizontalPadding: CGFloat?
 
     public init(
         id: AnyHashable? = nil,
@@ -27,7 +27,7 @@ public struct SettingTextField: View, Setting {
     ) {
         self.id = id
         self.placeholder = placeholder
-        self._text = text
+        _text = text
         self.verticalPadding = verticalPadding
         self.horizontalPadding = horizontalPadding
     }
@@ -39,12 +39,14 @@ public struct SettingTextField: View, Setting {
             verticalPadding: verticalPadding,
             horizontalPadding: horizontalPadding
         )
+        .id(identifier)
+        .highlightIfTargeted(id: identifier)
     }
 }
 
 struct SettingTextFieldView: View {
     @Environment(\.edgePadding) var edgePadding
-    
+
     let placeholder: String
     @Binding var text: String
 

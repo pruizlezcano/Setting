@@ -106,11 +106,20 @@ public struct SettingView: View {
                 SettingView(setting: setting)
             }
         case let customView as SettingCustomView:
+            // Use Color.clear overlay as an anchor point that doesn't affect layout
             customView.view
+                .overlay(
+                    Color.clear
+                        .frame(width: 0, height: 0)
+                        .id(customView.identifier)
+                )
+                .highlightIfTargeted(id: customView.identifier)
         default:
             // For generic SettingPicker, check if it conforms to View and render it
             if let viewSetting = setting as? any View {
                 AnyView(viewSetting)
+                    .id(setting.identifier)
+                    .highlightIfTargeted(id: setting.identifier)
             } else {
                 Text("Unsupported setting type: \(type(of: setting))")
             }

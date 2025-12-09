@@ -17,7 +17,7 @@ public struct SettingToggle: View, Setting {
     @Binding public var isOn: Bool
     public var horizontalSpacing = CGFloat(12)
     public var verticalPadding = CGFloat(14)
-    public var horizontalPadding: CGFloat? = nil
+    public var horizontalPadding: CGFloat?
 
     public init(
         id: AnyHashable? = nil,
@@ -29,7 +29,7 @@ public struct SettingToggle: View, Setting {
     ) {
         self.id = id
         self.title = title
-        self._isOn = isOn
+        _isOn = isOn
         self.horizontalSpacing = horizontalSpacing
         self.verticalPadding = verticalPadding
         self.horizontalPadding = horizontalPadding
@@ -43,12 +43,14 @@ public struct SettingToggle: View, Setting {
             verticalPadding: verticalPadding,
             horizontalPadding: horizontalPadding
         )
+        .id(identifier)
+        .highlightIfTargeted(id: identifier)
     }
 }
 
 struct SettingToggleView: View {
     @Environment(\.edgePadding) var edgePadding
-    
+
     let title: String
     @Binding var isOn: Bool
 

@@ -8,7 +8,6 @@
 
 import SwiftUI
 
-
 private struct EdgePaddingKey: EnvironmentKey {
     static let defaultValue = CGFloat(20)
 }
@@ -49,6 +48,10 @@ private struct SecondaryBackgroundColorKey: EnvironmentKey {
     }()
 }
 
+private struct ScrollTargetIDKey: EnvironmentKey {
+    static let defaultValue: AnyHashable? = nil
+}
+
 public extension EnvironmentValues {
     /// Padding to line up with the navigation title.
     var edgePadding: CGFloat {
@@ -84,5 +87,11 @@ public extension EnvironmentValues {
     var settingSecondaryBackgroundColor: Color {
         get { self[SecondaryBackgroundColorKey.self] }
         set { self[SecondaryBackgroundColorKey.self] = newValue }
+    }
+
+    /// The ID of the setting to scroll to after navigation (used for search jump links).
+    var scrollTargetID: AnyHashable? {
+        get { self[ScrollTargetIDKey.self] }
+        set { self[ScrollTargetIDKey.self] = newValue }
     }
 }

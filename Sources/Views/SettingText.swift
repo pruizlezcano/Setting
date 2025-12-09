@@ -17,7 +17,7 @@ public struct SettingText: View, Setting {
     public var foregroundColor: Color?
     public var horizontalSpacing = CGFloat(12)
     public var verticalPadding = CGFloat(14)
-    public var horizontalPadding: CGFloat? = nil
+    public var horizontalPadding: CGFloat?
 
     public init(
         id: AnyHashable? = nil,
@@ -43,6 +43,8 @@ public struct SettingText: View, Setting {
             verticalPadding: verticalPadding,
             horizontalPadding: horizontalPadding
         )
+        .id(identifier)
+        .highlightIfTargeted(id: identifier)
     }
 }
 

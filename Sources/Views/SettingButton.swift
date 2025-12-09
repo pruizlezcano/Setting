@@ -18,7 +18,7 @@ public struct SettingButton: View, Setting {
     public var indicator: String? = "arrow.up.forward"
     public var horizontalSpacing = CGFloat(12)
     public var verticalPadding = CGFloat(14)
-    public var horizontalPadding: CGFloat? = nil
+    public var horizontalPadding: CGFloat?
     public var action: () -> Void
 
     public init(
@@ -51,6 +51,8 @@ public struct SettingButton: View, Setting {
             horizontalPadding: horizontalPadding,
             action: action
         )
+        .id(identifier)
+        .highlightIfTargeted(id: identifier)
     }
 }
 

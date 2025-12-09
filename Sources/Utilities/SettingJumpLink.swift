@@ -14,13 +14,13 @@ import SwiftUI
 public struct SettingJumpLink: View {
     @Environment(\.settingSecondaryColor) var settingSecondaryColor
     @Environment(\.edgePadding) var edgePadding
-    
+
     public var path: SettingPath
     public var indicator = "chevron.forward"
     public var verticalSpacing = CGFloat(6)
     public var horizontalSpacing = CGFloat(12)
     public var verticalPadding = CGFloat(14)
-    public var horizontalPadding: CGFloat? = nil
+    public var horizontalPadding: CGFloat?
 
     @EnvironmentObject var settingViewModel: SettingViewModel
     @State var isActive = false
@@ -43,6 +43,7 @@ public struct SettingJumpLink: View {
 
     public var body: some View {
         let destinationPage = path.settings.last(where: { $0 is SettingPage })
+        let targetSettingID = path.settings.last?.identifier
 
         Button {
             isActive = true
@@ -54,6 +55,7 @@ public struct SettingJumpLink: View {
             if let destinationPage {
                 NavigationLink(isActive: $isActive) {
                     SettingView(setting: destinationPage, isPagePreview: false)
+                        .environment(\.scrollTargetID, targetSettingID)
                 } label: {
                     EmptyView()
                 }

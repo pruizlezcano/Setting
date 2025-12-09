@@ -113,6 +113,8 @@ public struct SettingPicker<SelectionValue: Hashable, Content: View>: View, Sett
             horizontalPadding: horizontalPadding,
             choicesConfiguration: choicesConfiguration
         )
+        .id(identifier)
+        .highlightIfTargeted(id: identifier)
     }
 }
 

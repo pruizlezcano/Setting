@@ -19,7 +19,7 @@ public struct SettingSlider: View, Setting {
     public var minimumImage: Image?
     public var maximumImage: Image?
     public var verticalPadding = CGFloat(8)
-    public var horizontalPadding: CGFloat? = nil
+    public var horizontalPadding: CGFloat?
 
     public init(
         id: AnyHashable? = nil,
@@ -32,7 +32,7 @@ public struct SettingSlider: View, Setting {
         horizontalPadding: CGFloat? = nil
     ) {
         self.id = id
-        self._value = value
+        _value = value
         self.range = range
         self.step = step
         self.minimumImage = minimumImage
@@ -51,12 +51,14 @@ public struct SettingSlider: View, Setting {
             verticalPadding: verticalPadding,
             horizontalPadding: horizontalPadding
         )
+        .id(identifier)
+        .highlightIfTargeted(id: identifier)
     }
 }
 
 struct SettingSliderView: View {
     @Environment(\.edgePadding) var edgePadding
-    
+
     @Binding var value: Double
     var range: ClosedRange<Double>
     var step: Double.Stride = 0.1
