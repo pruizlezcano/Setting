@@ -53,16 +53,7 @@ public struct SettingView: View {
                 .buttonStyle(.row)
                 .background {
                     NavigationLink(isActive: $isActive) {
-                        #if os(iOS)
-                            if #available(iOS 16.0, *) {
-                                SettingView(setting: page, isPagePreview: false)
-                                    .toolbar(.hidden, for: .tabBar)
-                            } else {
-                                SettingView(setting: page, isPagePreview: false)
-                            }
-                        #else
-                            SettingView(setting: page, isPagePreview: false)
-                        #endif
+                        SettingView(setting: page, isPagePreview: false)
                     } label: {
                         EmptyView()
                     }

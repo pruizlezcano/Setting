@@ -278,15 +278,7 @@ struct SettingPickerChoicesView<SelectionValue: Hashable, Content: View>: View {
                     .environment(\.pickerVerticalPadding, choicesConfiguration.verticalPadding)
                     .environment(\.pickerHorizontalPadding, choicesConfiguration.horizontalPadding)
             }
-            #if os(iOS)
-                if #available(iOS 16.0, *) {
-                    settingGroupView.toolbar(.hidden, for: .tabBar)
-                } else {
-                    settingGroupView
-                }
-            #else
-                settingGroupView
-            #endif
+            settingGroupView
         }
     }
 }
