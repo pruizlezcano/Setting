@@ -107,10 +107,16 @@ public struct SettingGroupView<Content: View>: View {
                     }
 
                     if let header {
-                        Text(header)
-                            .textCase(.uppercase)
-                            .font(.system(.subheadline))
-                            .foregroundColor(foregroundColor ?? settingSecondaryColor)
+                        if #available(iOS 26.0, macOS 26.0, *) {
+                            Text(header)
+                                .font(.headline)
+                                .foregroundColor(foregroundColor ?? settingSecondaryColor)
+                        } else {
+                            Text(header)
+                                .textCase(.uppercase)
+                                .font(.system(.subheadline))
+                                .foregroundColor(foregroundColor ?? settingSecondaryColor)
+                        }
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
