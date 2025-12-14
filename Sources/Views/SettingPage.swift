@@ -15,7 +15,7 @@ public struct SettingPage: Setting {
     public var id: AnyHashable?
     public var title: String
     public var selectedChoice: String?
-    public var spacing = CGFloat(20)
+    public var spacing = CGFloat(30)
     public var verticalPadding = CGFloat.settingSectionVerticalPadding
     public var backgroundColor: Color?
     public var navigationTitleDisplayMode = NavigationTitleDisplayMode.automatic
@@ -26,7 +26,7 @@ public struct SettingPage: Setting {
         id: AnyHashable? = nil,
         title: String,
         selectedChoice: String? = nil,
-        spacing: CGFloat = CGFloat(20),
+        spacing: CGFloat = CGFloat(30),
         verticalPadding: CGFloat = CGFloat.settingSectionVerticalPadding,
         backgroundColor: Color? = nil,
         navigationTitleDisplayMode: SettingPage.NavigationTitleDisplayMode = NavigationTitleDisplayMode.automatic,
@@ -105,7 +105,7 @@ struct SettingPageView<Content>: View where Content: View {
     @Environment(\.scrollTargetID) var scrollTargetID
 
     var title: String
-    var spacing = CGFloat(20)
+    var spacing = CGFloat(30)
     var verticalPadding = CGFloat.settingSectionVerticalPadding
     var backgroundColor: Color?
     var navigationTitleDisplayMode = SettingPage.NavigationTitleDisplayMode.inline
