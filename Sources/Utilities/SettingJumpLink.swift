@@ -94,6 +94,7 @@ public struct SettingJumpLink: View {
                             }
                         }
                     }
+                    .lineLimit(1)
                     .font(.footnote)
                     .foregroundColor(settingSecondaryColor)
                     .frame(maxWidth: .infinity, alignment: .leading)
